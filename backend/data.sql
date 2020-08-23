@@ -13,6 +13,7 @@ CREATE TABLE cards
 (
   id SERIAL PRIMARY KEY,
   username TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
+  category TEXT,
   question TEXT NOT NULL,
   answer TEXT NOT NULL
 );
