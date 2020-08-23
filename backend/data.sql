@@ -14,5 +14,5 @@ CREATE TABLE cards
   id SERIAL PRIMARY KEY,
   username TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
   question TEXT NOT NULL,
-  answer TEXT NOT NULL,
+  answer TEXT NOT NULL
 );
