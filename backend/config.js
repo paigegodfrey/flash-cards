@@ -20,6 +20,8 @@ if (process.env.NODE_ENV === "test") {
   DB_URI = process.env.DATABASE_URL || "flash-cards";
 }
 
+console.log("Using database", DB_URI);
+
 module.exports = {
   SECRET_KEY,
   PORT,
