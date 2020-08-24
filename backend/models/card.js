@@ -56,19 +56,6 @@ class Card {
   /** Create a flash card (from data), update db, return new card data. */
 
   static async create(data) {
-    const duplicateCheck = await db.query(
-      `SELECT question 
-          FROM cards 
-          WHERE question = $1 AND username = $2`,
-      [data.question, data.username]);
-
-    if (duplicateCheck.rows[0]) {
-      let duplicateError = new Error(
-        `There already exists a flash card with question '${data.question}`);
-      duplicateError.status = 409; // 409 Conflict
-      throw duplicateError;
-    }
-
     const result = await db.query(
       `INSERT INTO cards 
             (username, category, question, answer)
@@ -79,4 +66,31 @@ class Card {
     return result.rows[0];
   }
 
+  /** Update flash card and return data. */
+
+  static async update(id, data) {
+    const result = await db.query(
+      `UPDATE cards SET category=$1, question=$2, answer=$3
+          WHERE id=$4
+          RETURNING id, username, category, question, answer`,
+      [data.category, data.question, data.answer, data.id]);
+
+    return result.rows[0];
+  }
+
+  /** Delete given card from database; returns undefined. */
+
+  static async remove(id) {
+    const result = await db.query(
+      `DELETE FROM cards 
+            WHERE id = $1 
+            RETURNING id`,
+      [id]);
+
+    if (result.rows.length === 0) {
+      let notFound = new Error(`There exists no card '${id}`);
+      notFound.status = 404;
+      throw notFound;
+    }
+  }
 }
