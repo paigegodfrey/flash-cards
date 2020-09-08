@@ -9,7 +9,7 @@ class Card {
     let whereExpressions = [];
     let queryValues = [];
 
-    // For each possible search term, add to whereExpressions and
+    // For each possible search term/category, add to whereExpressions and
     // queryValues so we can generate the right SQL
 
     if (data.category) {
@@ -22,7 +22,7 @@ class Card {
       whereExpressions.push(`question ILIKE $${queryValues.length}`);
     }
 
-    if (whereExpressions.length > 0) {
+    if (whereExpressions.length) {
       baseQuery += " WHERE ";
     }
 
@@ -94,3 +94,5 @@ class Card {
     }
   }
 }
+
+module.exports = Card;
